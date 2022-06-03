@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    [SerializeField] private float damage;
     private Vector3 screenBound;
     
     private void Start()
@@ -16,12 +17,31 @@ public class Projectile : MonoBehaviour
         if(transform.position.y > screenBound.y || transform.position.y < -screenBound.y || 
             transform.position.x > screenBound.x || transform.position.x < -screenBound.x)
         {
-            PoolManager.instance.ReturnToPool(this.gameObject);
+            DisableGameObject(this.gameObject);
         }
     }
 
     public void Launch(Vector3 direction, float speed)
     {
         GetComponent<Rigidbody2D>().AddForce(direction * speed, ForceMode2D.Impulse);
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if(col.CompareTag("Enemy"))
+        {
+            Enemy enemy = col.GetComponent<Enemy>();
+            if(enemy != null)
+            {
+                enemy.TakeDamage();
+            }
+
+            DisableGameObject(this.gameObject);
+        }
+    }
+
+    private void DisableGameObject(GameObject obj)
+    {
+        PoolManager.instance.ReturnToPool(obj);
     }
 }
