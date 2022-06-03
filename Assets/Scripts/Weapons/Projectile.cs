@@ -30,10 +30,10 @@ public class Projectile : MonoBehaviour
     {
         if(col.CompareTag("Enemy"))
         {
-            Enemy enemy = col.GetComponent<Enemy>();
-            if(enemy != null)
+            ITakeDamage enemyTakeDamage = col.GetComponent<ITakeDamage>();
+            if(enemyTakeDamage != null)
             {
-                enemy.TakeDamage();
+                enemyTakeDamage.TakeDamage();
             }
 
             DisableGameObject(this.gameObject);

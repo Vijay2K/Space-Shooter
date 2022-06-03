@@ -19,6 +19,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
+        FindObjectOfType<PlayerHealth>().onDead += StopSpawning;
         StartCoroutine(SpawnDelay());
     }
 
@@ -27,6 +28,11 @@ public class EnemySpawner : MonoBehaviour
         float randomPos_X = Random.Range(-screenBound.x + boundOffset, screenBound.x - boundOffset);
         Vector2 pos = new Vector2(randomPos_X, transform.position.y);
         PoolManager.instance.ReleaseFromThePool(enemy.gameObject, pos);
+    }
+
+    private void StopSpawning()
+    {
+        StopAllCoroutines();
     }
 
     private IEnumerator SpawnDelay()

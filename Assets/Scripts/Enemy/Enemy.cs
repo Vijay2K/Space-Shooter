@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, ITakeDamage
 {
     [Range(0, 100)]
     [SerializeField] private float moverSpeed;
@@ -41,4 +41,15 @@ public class Enemy : MonoBehaviour
     {
 
     }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if(col.gameObject.CompareTag("Player"))
+        {
+            ITakeDamage playerTakeDamage = col.gameObject.GetComponent<ITakeDamage>();
+            playerTakeDamage.TakeDamage();
+        }
+    }
+
+
 }

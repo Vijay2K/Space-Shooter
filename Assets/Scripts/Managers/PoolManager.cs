@@ -10,7 +10,11 @@ public class PoolManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if(instance == null)
+        {
+            instance = this;
+        }
+
         poolDict = new Dictionary<string, Queue<GameObject>>();
     }
 
